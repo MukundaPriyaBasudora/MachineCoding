@@ -11,10 +11,19 @@ public class ShoppingCart {
         cart.addItem(p2, 10);
         cart.addItem(p3, 4);
         cart.viewCart();
-        // cart.updateQty(p3, 0);
-
-
-
+        cart.updateQty(p3, 4);
+        cart.removeItem(p2);
+        cart.viewCart();
+        cart.addItem(p1,4);
+        cart.viewCart();
+        System.out.println("before applying offer:"+cart.getsubTotal());
+        Offer offer=new FlatDiscount("OFF1", "Flat discount of 5000", 50000.0);
+        cart.applyOffer(offer);
+        System.out.println("Final Cart Total (incl. 10% tax, minus offer): " + cart.getTotal());
+        Order order=cart.checkOut(u1);
+        if(order!=null){
+            System.out.println("Order placed for " + u1.getUserName() + ": $" + order.getTotalAmt() + " [Order #" + order.getOrderId() + "]");
+        }
     }
 }
 class Product{
@@ -118,7 +127,8 @@ class Cart{
         else{
             item.setQty(item.getQty()+qty);
         }
-        System.out.println("Added "+qty+" Of product"+product.getName()+"to cart");
+        System.out.println("Added "+qty+
+        " "+product.getName()+" to cart");
     }
     public void removeItem(Product product){
         items.remove(product.getPid());
@@ -139,7 +149,7 @@ class Cart{
     public void viewCart(){
         if(items==null)return;
         for(CartItem item:items.values()){
-            System.out.println(item.geProduct().getName()+item.getQty());
+            System.out.println(item.geProduct().getName()+" "+item.getQty());
         }
         System.out.println("cart subTotal= "+getsubTotal());
     }
